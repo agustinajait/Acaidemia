@@ -8,7 +8,7 @@ const FEATURES: { icon: IconName; title: string; text: string; cta: string; href
   { icon: 'award', title: 'Certificado con QR', text: 'Cada certificado tiene un código único que cualquiera puede verificar online.', cta: 'Verificar uno', href: '/certificados' },
   { icon: 'star', title: 'Estrellas en tu perfil', text: 'Por cada curso aprobado sumás una estrella en tu perfil público.', cta: 'Empezar a sumar', href: '/cursos' },
   { icon: 'card', title: 'Mercado Pago o transferencia', text: 'Pagá con tarjeta, dinero en cuenta o transferí y subí el comprobante.', cta: 'Ver cursos', href: '/cursos' },
-  { icon: 'users', title: 'Docentes de la comunidad', text: 'Publicá tu curso, nosotros lo revisamos y lo ponemos a la venta.', cta: 'Quiero enseñar', href: '/mi-cuenta#docente' },
+  { icon: 'users', title: 'Especialistas de la comunidad', text: 'Publicá tu curso, nosotros lo revisamos y lo ponemos a la venta.', cta: 'Quiero enseñar', href: '/mi-cuenta#docente' },
 ];
 
 export default async function Home() {

@@ -28,7 +28,7 @@ export default async function MiCuenta({ searchParams }: { searchParams: Promise
         </div>
         <Stars n={certs?.length ?? 0} />
       </div>
-      <Flash ok={ok === 'solicitud' ? 'Recibimos tu solicitud para ser docente.' : ok} error={error} />
+      <Flash ok={ok === 'solicitud' ? 'Recibimos tu solicitud para ser especialista.' : ok} error={error} />
 
       <section>
         <h2>Mis cursos</h2>
@@ -105,12 +105,12 @@ export default async function MiCuenta({ searchParams }: { searchParams: Promise
         <div className="card" id="docente">
           <h2>Enseñar en Acaiidemia</h2>
           {profile.role !== 'alumno' ? (
-            <><p className="muted">Ya tenés acceso al panel docente.</p><Link className="btn" href="/docente">Ir al panel docente</Link></>
+            <><p className="muted">Ya tenés acceso al panel de especialista.</p><Link className="btn" href="/docente">Ir al panel de especialista</Link></>
           ) : profile.teacher_request ? (
-            <p className="muted">Tu solicitud está en revisión. Te habilitamos el panel docente cuando se apruebe.</p>
+            <p className="muted">Tu solicitud está en revisión. Te habilitamos el panel de especialista cuando se apruebe.</p>
           ) : (
             <><p className="muted">Creá tus cursos, la administración los revisa y los publica. Cobrás tu parte de cada venta.</p>
-              <form action={requestTeacher}><button className="btn secondary" type="submit">Quiero ser docente</button></form></>
+              <form action={requestTeacher}><button className="btn secondary" type="submit">Quiero ser especialista</button></form></>
           )}
         </div>
       </section>

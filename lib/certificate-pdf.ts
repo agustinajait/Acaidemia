@@ -110,7 +110,7 @@ export async function renderCertificatePdf(d: CertData) {
     page.drawText(role, { x: cx - sans.widthOfTextAtSize(role, 8.5) / 2, y: sigY - 28, size: 8.5, font: sans, color: MUTED });
   };
   sig(200, 'HUEHACI', 'Dirección Académica · Acaiidemia');
-  if (d.teacherName) sig(430, d.teacherName, 'Docente del curso');
+  if (d.teacherName) sig(430, d.teacherName, 'Especialista del curso');
 
   // QR de verificación
   const verifyUrl = `${siteUrl()}/certificados/${d.code}`;

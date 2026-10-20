@@ -35,7 +35,7 @@ export const statusLabel: Record<string, string> = {
   borrador: 'Borrador', en_revision: 'En revisión', publicado: 'Publicado', archivado: 'Archivado',
   pendiente: 'Pendiente', aprobado: 'Aprobado', rechazado: 'Rechazado',
   mercadopago: 'Mercado Pago', transferencia: 'Transferencia', gratis: 'Gratis',
-  alumno: 'Alumno/a', docente: 'Docente', admin: 'Admin',
+  alumno: 'Alumno/a', docente: 'Especialista', admin: 'Admin',
 };
 
 /** Opciones máximas por pregunta en el editor de la evaluación final. */

@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               {profile ? (
                 <>
                   <Link href="/mi-cuenta">Mis cursos</Link>
-                  {(profile.role === 'docente' || profile.role === 'admin') && <Link href="/docente" className="hide-sm">Docente</Link>}
+                  {(profile.role === 'docente' || profile.role === 'admin') && <Link href="/docente" className="hide-sm">Especialista</Link>}
                   {profile.role === 'admin' && <Link href="/admin" className="hide-sm">Admin</Link>}
                   <form action={signOut}><button className="btn ghost sm" type="submit">Salir</button></form>
                 </>

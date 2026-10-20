@@ -31,7 +31,7 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
 
   return (
     <div className="container section stack">
-      <Link href="/docente" className="small muted">← Panel docente</Link>
+      <Link href="/docente" className="small muted">← Panel de especialista</Link>
       <div className="row between">
         <h1 style={{ margin: 0 }}>{isNew ? 'Nuevo curso' : course!.title}</h1>
         {course && <div className="row"><StatusBadge s={course.status} />{course.status === 'publicado' && <Link className="btn ghost sm" href={`/cursos/${course.slug}`}>Ver página</Link>}</div>}

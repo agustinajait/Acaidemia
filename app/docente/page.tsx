@@ -3,7 +3,7 @@ import { requireRole } from '@/lib/auth';
 import { ars } from '@/lib/format';
 import { StatusBadge } from '@/components/ui';
 
-export const metadata = { title: 'Panel docente' };
+export const metadata = { title: 'Panel de especialista' };
 
 export default async function Docente() {
   const { supabase, user } = await requireRole(['docente', 'admin'], '/docente');
@@ -18,7 +18,7 @@ export default async function Docente() {
 
   return (
     <div className="container section stack">
-      <div className="row between"><h1 style={{ margin: 0 }}>Panel docente</h1><Link className="btn" href="/docente/cursos/nuevo">+ Nuevo curso</Link></div>
+      <div className="row between"><h1 style={{ margin: 0 }}>Panel de especialista</h1><Link className="btn" href="/docente/cursos/nuevo">+ Nuevo curso</Link></div>
       <div className="features">
         <div className="feature"><div className="small muted">Alumnos</div><div className="price" style={{ fontSize: '1.6rem' }}>{students}</div></div>
         <div className="feature"><div className="small muted">Ventas aprobadas</div><div className="price" style={{ fontSize: '1.6rem' }}>{ars(gross)}</div></div>
