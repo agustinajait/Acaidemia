@@ -26,7 +26,7 @@ export default async function Perfil({ params }: { params: Promise<{ id: string 
           <div className="row">
             <span className="stars" aria-label={`${n} estrellas`}>{'★'.repeat(Math.min(n, 10))}{n > 10 ? '+' : ''}{n === 0 && <span className="muted small">Sin estrellas aún</span>}</span>
             <span className="small muted">{n} curso{n === 1 ? '' : 's'} aprobado{n === 1 ? '' : 's'}</span>
-            {p.role === 'docente' && <span className="badge brand">Docente</span>}
+            {p.role === 'docente' && <span className="badge brand">Especialista</span>}
           </div>
           {p.bio && <p className="muted" style={{ marginTop: 10, marginBottom: 0 }}>{p.bio}</p>}
         </div>

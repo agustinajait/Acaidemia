@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 const TABS = [
   ['transferencias', 'Transferencias'],
   ['cursos', 'Cursos a revisar'],
-  ['docentes', 'Solicitudes docentes'],
+  ['docentes', 'Solicitudes de especialistas'],
   ['ventas', 'Ventas'],
   ['config', 'Configuración'],
 ] as const;
@@ -111,7 +111,7 @@ async function CoursesReview({ db }: { db: DB }) {
           </div>
           <form action={reviewCourse} className="row" style={{ marginTop: 12 }}>
             <input type="hidden" name="id" value={c.id} />
-            <input type="text" name="notes" placeholder="Devolución para el docente (opcional)" style={{ flex: 1, minWidth: 200 }} />
+            <input type="text" name="notes" placeholder="Devolución para el/la especialista (opcional)" style={{ flex: 1, minWidth: 200 }} />
             <button className="btn ok sm" name="decision" value="publicar" type="submit">Publicar</button>
             <button className="btn secondary sm" name="decision" value="devolver" type="submit">Devolver con cambios</button>
           </form>
@@ -161,11 +161,11 @@ async function Sales({ db }: { db: DB }) {
       <div className="features">
         <div className="feature"><div className="small muted">Facturación aprobada</div><div className="price" style={{ fontSize: '1.5rem' }}>{ars(sum('amount_ars'))}</div></div>
         <div className="feature"><div className="small muted">Ingreso HUEHACI</div><div className="price" style={{ fontSize: '1.5rem' }}>{ars(sum('platform_fee_ars'))}</div></div>
-        <div className="feature"><div className="small muted">Correspondiente a docentes</div><div className="price" style={{ fontSize: '1.5rem' }}>{ars(sum('teacher_amount_ars'))}</div></div>
+        <div className="feature"><div className="small muted">Correspondiente a especialistas</div><div className="price" style={{ fontSize: '1.5rem' }}>{ars(sum('teacher_amount_ars'))}</div></div>
       </div>
       {byTeacher.size > 0 && (
         <div className="card flat">
-          <h3>Acumulado por docente</h3>
+          <h3>Acumulado por especialista</h3>
           <table><tbody>{[...byTeacher].map(([n, v]) => <tr key={n}><td>{n}</td><td style={{ textAlign: 'right' }}>{ars(v)}</td></tr>)}</tbody></table>
         </div>
       )}
@@ -192,7 +192,7 @@ async function Settings({ db }: { db: DB }) {
     <div className="card" id="config" style={{ maxWidth: 640 }}>
       <h2>Configuración</h2>
       <form action={saveSettings}>
-        <div className="field"><label>Comisión de la plataforma sobre cursos de docentes (%)</label><input type="number" name="commission_pct" min={0} max={100} step="0.5" defaultValue={s?.commission_pct} /></div>
+        <div className="field"><label>Comisión de la plataforma sobre cursos de especialistas (%)</label><input type="number" name="commission_pct" min={0} max={100} step="0.5" defaultValue={s?.commission_pct} /></div>
         <h3 style={{ marginTop: 24 }}>Datos para transferencias</h3>
         <div className="field"><label>Titular</label><input type="text" name="bank_holder" defaultValue={s?.bank_holder} /></div>
         <div className="row" style={{ alignItems: 'flex-start' }}>

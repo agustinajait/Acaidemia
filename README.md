@@ -9,7 +9,7 @@ Cursos y contenidos para emprendedores de impacto social, con certificado verifi
 | Rol | Funcionalidades |
 |---|---|
 | **Alumno/a** | Registro, catálogo con búsqueda, compra por Mercado Pago o transferencia (sube comprobante), cursada con progreso por lección, certificado PDF con QR al completar, ⭐ por curso en su perfil público |
-| **Docente** | Solicita serlo desde "Mi cuenta"; crea cursos y lecciones (video YouTube/Vimeo + texto), envía a revisión, ve alumnos y ventas netas de comisión |
+| **Especialista** | Solicita serlo desde "Mi cuenta"; crea cursos y lecciones (video YouTube/Vimeo + texto), envía a revisión, ve alumnos y ventas netas de comisión |
 | **Admin (HUEHACI)** | Aprueba/rechaza transferencias viendo el comprobante, publica o devuelve cursos, aprueba docentes, ve ventas y acumulado a liquidar por docente, configura comisión y datos bancarios. También crea sus propios cursos (100% para la plataforma) |
 | **Público** | Verificación de certificados en `/certificados/<código>` (a donde apunta el QR) |
 

@@ -44,7 +44,7 @@ export default async function Aprender({ params, searchParams }: { params: Promi
   return (
     <div className="container section">
       <Link href={`/cursos/${slug}`} className="small muted">← {course.title}</Link>
-      {!enrollment && <div className="flash info" style={{ marginTop: 12 }}>Vista de docente/admin: el progreso no se guarda.</div>}
+      {!enrollment && <div className="flash info" style={{ marginTop: 12 }}>Vista de especialista/admin: el progreso no se guarda.</div>}
 
       {(sp.certificado || cert) && (
         <div className="celebrate" style={{ margin: '16px 0' }}>
@@ -135,7 +135,7 @@ function QuizView({ slug, courseId, quiz, passPct, enrolled, unlocked, passed, n
       <p className="muted" style={{ margin: 0 }}>
         {quiz.length} {quiz.length === 1 ? 'pregunta' : 'preguntas'} · Para aprobar necesitás {passPct}% o más. Podés reintentar las veces que quieras.
       </p>
-      {!enrolled && <div className="flash info">Vista previa de docente/admin: podés ver las preguntas pero no rendir.</div>}
+      {!enrolled && <div className="flash info">Vista previa de especialista/admin: podés ver las preguntas pero no rendir.</div>}
       <Flash error={error} />
       {passed ? (
         <div className="flash ok">Ya aprobaste la evaluación{lastAttempt ? ` (${lastAttempt.score_pct}%)` : ''}.</div>
