@@ -124,9 +124,10 @@ input:focus, textarea:focus, select:focus { outline: 2px solid color-mix(in srgb
 
 /* Hero */
 .hero { padding: 64px 0 40px; background: radial-gradient(900px 400px at 85% -10%, var(--brand-soft), transparent 70%); }
-.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 18ch; }
+.hero h1 { font-size: clamp(2.5rem, 5.2vw, 4rem); max-width: 16ch; letter-spacing: -.015em; }
 .hero h1 em { font-style: normal; color: var(--brand-bright); }
-.hero p.lead { font-size: 1.15rem; color: var(--muted); max-width: 52ch; }
+.hero p.lead { font-size: clamp(1.15rem, 2.2vw, 1.4rem); color: var(--ink); max-width: 38ch; margin-bottom: .6em; }
+.hero p.hero-note { color: var(--muted); max-width: 52ch; }
 .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
 
 /* Cajas dinámicas: entran escalonadas, se elevan y tienen un brillo lila que sigue al puntero */
@@ -151,9 +152,23 @@ input:focus, textarea:focus, select:focus { outline: 2px solid color-mix(in srgb
 .feature .more { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .88rem; color: var(--brand); }
 .feature .more svg { transition: transform .25s; }
 .feature:hover .more svg { transform: translateX(4px); }
+/* Imagen del inicio */
+/* Hero: imagen completa arriba (banner) y debajo título a la izquierda + bajada y botones a la derecha */
+.hero { padding-top: 28px; }
+.hero-art { margin: 0 0 40px; border-radius: 24px; overflow: hidden; box-shadow: 0 18px 48px rgba(91, 38, 120, .12); background: #fff; animation: rise .7s cubic-bezier(.2, .7, .2, 1) backwards; }
+.hero-art img { width: 100%; height: auto; display: block; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px 56px; align-items: end; }
+.hero-grid h1 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 0; }
+.hero-grid .lead { margin-top: 0; }
+@media (max-width: 860px) {
+  .hero { padding-top: 20px; }
+  .hero-art { margin-bottom: 28px; border-radius: 16px; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-grid h1 { font-size: clamp(2.5rem, 9vw, 3.6rem); }
+}
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .feature, .course-card { animation: none; transition: none; }
+  .feature, .course-card, .hero-art { animation: none; transition: none; }
   .feature:hover, .course-card:hover { transform: none; }
   .feature .ic, .feature .more svg { transition: none; }
 }
