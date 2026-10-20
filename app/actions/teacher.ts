@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { requireRole } from '@/lib/auth';
 import { QUIZ_OPTION_SLOTS, slugify } from '@/lib/format';
+import { mediaOf } from '@/lib/media';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
 const numOrNull = (f: FormData, k: string) => (str(f, k) === '' ? null : Number(str(f, k)));
@@ -15,12 +16,15 @@ export async function saveCourse(formData: FormData) {
   const price = Number(str(formData, 'price_ars') || 0);
   if (!(price >= 0)) redirect(`/docente/cursos/${id || 'nuevo'}?error=${encodeURIComponent('Precio inválido')}`);
 
+  const cover = str(formData, 'cover_url');
+  if (cover && !mediaOf(cover)) redirect(`/docente/cursos/${id || 'nuevo'}?error=${encodeURIComponent('El link de la portada tiene que empezar con https://')}`);
+
   const fields = {
     title,
     subtitle: str(formData, 'subtitle') || null,
     description: str(formData, 'description'),
     category: str(formData, 'category') || null,
-    cover_url: str(formData, 'cover_url') || null,
+    cover_url: cover || null,
     hours: numOrNull(formData, 'hours'),
     price_ars: price,
   };
