@@ -6,6 +6,9 @@ export const ars = (n: number) =>
 export const fecha = (d: string | Date) =>
   new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(d));
 
+/** E-Mood: plataforma de HUEHACI para llevar lo aprendido a módulos operativos. */
+export const EMOOD_URL = 'https://emood.huehaci.com/';
+
 export const siteUrl = () => (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
 export function slugify(s: string) {
