@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getSession } from '@/lib/auth';
 import { ars } from '@/lib/format';
 import { Cover } from '@/components/ui';
+import { Icon } from '@/components/icons';
 import { teacherName } from '@/lib/queries';
 
 export default async function CursoDetalle({ params }: { params: Promise<{ slug: string }> }) {
@@ -47,7 +48,7 @@ export default async function CursoDetalle({ params }: { params: Promise<{ slug:
             <ol style={{ paddingLeft: 20, margin: 0 }}>
               {lessons.map((l) => <li key={l.id} style={{ padding: '4px 0' }}>{l.title}</li>)}
             </ol>
-            {hasQuiz && <p className="small" style={{ margin: '10px 0 0' }}>📝 <strong>Evaluación final</strong> ({Number(quizCount)} preguntas)</p>}
+            {hasQuiz && <p className="small row" style={{ margin: '12px 0 0', gap: 8 }}><Icon name="quiz" size={18} className="brand-ic" /><span><strong>Evaluación final</strong> ({Number(quizCount)} preguntas)</span></p>}
           </div>
         </div>
 
@@ -63,7 +64,7 @@ export default async function CursoDetalle({ params }: { params: Promise<{ slug:
             <ul className="small muted" style={{ paddingLeft: 18, margin: 0 }}>
               <li>Acceso de por vida</li>
               <li>Certificado digital con QR {hasQuiz ? 'al completarlo y aprobar la evaluación final' : 'al completarlo'}</li>
-              <li>+1 ⭐ en tu perfil público</li>
+              <li>+1 estrella en tu perfil público</li>
               <li>Pagá con Mercado Pago o transferencia</li>
             </ul>
           </div>

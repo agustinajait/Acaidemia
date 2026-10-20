@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { requireRole } from '@/lib/auth';
 import { saveCourse, setCourseStatus, deleteCourse, saveLesson, deleteLesson, moveLesson, saveQuizSettings, saveQuizQuestion, deleteQuizQuestion } from '@/app/actions/teacher';
 import { QUIZ_OPTION_SLOTS } from '@/lib/format';
+import { Icon } from '@/components/icons';
 import { Flash, StatusBadge } from '@/components/ui';
 import type { Course, Lesson, QuizQuestion } from '@/lib/types';
 
@@ -99,7 +100,7 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
           <div className="stack">
             {lessons.map((l, i) => (
               <details key={l.id} className="card flat" style={{ padding: 14 }}>
-                <summary>{i + 1}. {l.title}{l.video_url ? ' · 🎬' : ''}</summary>
+                <summary>{i + 1}. {l.title}{l.video_url && <Icon name="video" size={16} className="inline-ic" label="Tiene video" />}</summary>
                 <form action={saveLesson} style={{ marginTop: 14 }}>
                   <input type="hidden" name="course_id" value={course.id} /><input type="hidden" name="id" value={l.id} />
                   <div className="field"><label>Título</label><input type="text" name="title" defaultValue={l.title} required /></div>

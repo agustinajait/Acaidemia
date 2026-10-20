@@ -15,7 +15,10 @@ export function StatusBadge({ s }: { s: string }) {
 }
 
 export function Cover({ url, title }: { url: string | null; title: string }) {
-  const initials = title.split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+  const STOP = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'e', 'en', 'para', 'con', 'a', 'al', 'un', 'una', 'por']);
+  const words = title.split(/\s+/).filter(Boolean);
+  const main = words.filter((w) => !STOP.has(w.toLowerCase()));
+  const initials = (main.length ? main : words).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
   return (
     <div className="cover">
       {url ? <img src={url} alt="" /> : <span className="initials">{initials}</span>}
@@ -23,9 +26,9 @@ export function Cover({ url, title }: { url: string | null; title: string }) {
   );
 }
 
-export function CourseCard({ c, teacher }: { c: { slug: string; title: string; subtitle: string | null; cover_url: string | null; price_ars: number; hours: number | null; category: string | null }; teacher?: string }) {
+export function CourseCard({ c, teacher, index = 0 }: { c: { slug: string; title: string; subtitle: string | null; cover_url: string | null; price_ars: number; hours: number | null; category: string | null }; teacher?: string; index?: number }) {
   return (
-    <Link href={`/cursos/${c.slug}`} className="course-card">
+    <Link href={`/cursos/${c.slug}`} className="course-card" style={{ '--i': index } as React.CSSProperties}>
       <Cover url={c.cover_url} title={c.title} />
       <div className="body">
         <div className="row small">
