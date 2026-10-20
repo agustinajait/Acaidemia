@@ -3,6 +3,7 @@ import Link from 'next/link';
 import './globals.css';
 import { getSession } from '@/lib/auth';
 import { signOut } from './actions/auth';
+import { Icon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: { default: 'Acaiidemia — Cursos y contenidos para emprendedores de impacto social', template: '%s · Acaiidemia' },
@@ -45,9 +46,49 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </header>
         <main>{children}</main>
         <footer className="footer">
-          <div className="container row between">
-            <span>Acaiidemia · un producto de <strong>HUEHACI</strong></span>
-            <span className="row"><Link href="/certificados">Verificar un certificado</Link></span>
+          <div className="container footer-grid">
+            <div className="footer-brand">
+              <Link href="/" className="logo">
+                <img src="/logo.png" alt="" className="logo-mark" width={34} height={34} />
+                <span>Ac<b>aii</b>demia</span>
+              </Link>
+              <p>Cursos y contenidos para emprendedores de impacto social.</p>
+            </div>
+            <nav aria-label="Plataforma">
+              <h4>Plataforma</h4>
+              <ul>
+                <li><Link href="/cursos">Cursos</Link></li>
+                <li><Link href="/certificados">Verificar un certificado</Link></li>
+                <li><Link href="/mi-cuenta#docente">Quiero enseñar</Link></li>
+              </ul>
+            </nav>
+            <nav aria-label="Tu cuenta">
+              <h4>Tu cuenta</h4>
+              <ul>
+                {profile ? (
+                  <>
+                    <li><Link href="/mi-cuenta">Mis cursos</Link></li>
+                    <li><Link href={`/perfil/${profile.id}`}>Mi perfil</Link></li>
+                  </>
+                ) : (
+                  <>
+                    <li><Link href="/ingresar">Ingresar</Link></li>
+                    <li><Link href="/registro">Crear cuenta</Link></li>
+                  </>
+                )}
+              </ul>
+            </nav>
+            <div>
+              <h4>Un producto de HUEHACI</h4>
+              <a className="addr" href="https://www.google.com/maps/search/?api=1&query=Esmeralda+1029%2C+CABA%2C+Argentina" target="_blank" rel="noopener noreferrer">
+                <Icon name="pin" size={18} />
+                <span>Esmeralda 1029<br />Ciudad Autónoma de Buenos Aires</span>
+              </a>
+            </div>
+          </div>
+          <div className="container footer-bottom">
+            <span>© {new Date().getFullYear()} HUEHACI. Todos los derechos reservados.</span>
+            <span>Hecho en Buenos Aires</span>
           </div>
         </footer>
       </body>

@@ -1,6 +1,15 @@
 import Link from 'next/link';
 import { CourseCard } from '@/components/ui';
+import { Icon, type IconName } from '@/components/icons';
+import { Spotlight } from '@/components/spotlight';
 import { publishedCourses, teacherName } from '@/lib/queries';
+
+const FEATURES: { icon: IconName; title: string; text: string; cta: string; href: string }[] = [
+  { icon: 'award', title: 'Certificado con QR', text: 'Cada certificado tiene un código único que cualquiera puede verificar online.', cta: 'Verificar uno', href: '/certificados' },
+  { icon: 'star', title: 'Estrellas en tu perfil', text: 'Por cada curso aprobado sumás una estrella en tu perfil público.', cta: 'Empezar a sumar', href: '/cursos' },
+  { icon: 'card', title: 'Mercado Pago o transferencia', text: 'Pagá con tarjeta, dinero en cuenta o transferí y subí el comprobante.', cta: 'Ver cursos', href: '/cursos' },
+  { icon: 'users', title: 'Docentes de la comunidad', text: 'Publicá tu curso, nosotros lo revisamos y lo ponemos a la venta.', cta: 'Quiero enseñar', href: '/mi-cuenta#docente' },
+];
 
 export default async function Home() {
   const courses = await publishedCourses({ limit: 6 });
@@ -20,12 +29,16 @@ export default async function Home() {
 
       <section className="section">
         <div className="container">
-          <div className="features">
-            <div className="feature"><div className="ic">🎓</div><h3>Certificado con QR</h3><p className="muted small">Cada certificado tiene un código único que cualquiera puede verificar online.</p></div>
-            <div className="feature"><div className="ic">⭐</div><h3>Estrellas en tu perfil</h3><p className="muted small">Por cada curso aprobado sumás una estrella en tu perfil público.</p></div>
-            <div className="feature"><div className="ic">💳</div><h3>Mercado Pago o transferencia</h3><p className="muted small">Pagá con tarjeta, dinero en cuenta o transferí y subí el comprobante.</p></div>
-            <div className="feature"><div className="ic">🧑‍🏫</div><h3>Docentes de la comunidad</h3><p className="muted small">Publicá tu curso, nosotros lo revisamos y lo ponemos a la venta.</p></div>
-          </div>
+          <Spotlight className="features">
+            {FEATURES.map((f, i) => (
+              <Link key={f.title} href={f.href} className="feature" style={{ '--i': i } as React.CSSProperties}>
+                <span className="ic"><Icon name={f.icon} size={22} /></span>
+                <h3>{f.title}</h3>
+                <p className="muted small">{f.text}</p>
+                <span className="more">{f.cta} <Icon name="arrow" size={16} /></span>
+              </Link>
+            ))}
+          </Spotlight>
         </div>
       </section>
 
@@ -33,10 +46,10 @@ export default async function Home() {
         <div className="container">
           <div className="row between" style={{ marginBottom: 18 }}>
             <h2 style={{ margin: 0 }}>Cursos recientes</h2>
-            <Link href="/cursos" className="btn ghost sm">Ver todos →</Link>
+            <Link href="/cursos" className="btn ghost sm">Ver todos <Icon name="arrow" size={16} /></Link>
           </div>
           {courses.length ? (
-            <div className="grid">{courses.map((c) => <CourseCard key={c.id} c={c} teacher={teacherName(c.owner)} />)}</div>
+            <Spotlight className="grid">{courses.map((c, i) => <CourseCard key={c.id} c={c} teacher={teacherName(c.owner)} index={i} />)}</Spotlight>
           ) : (
             <div className="card flat muted">Todavía no hay cursos publicados.</div>
           )}

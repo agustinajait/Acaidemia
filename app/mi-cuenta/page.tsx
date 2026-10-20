@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Icon } from '@/components/icons';
 import { requireUser } from '@/lib/auth';
 import { ars, fecha, statusLabel } from '@/lib/format';
 import { updateProfile, requestTeacher } from '@/app/actions/profile';
@@ -58,7 +59,7 @@ export default async function MiCuenta({ searchParams }: { searchParams: Promise
           <div className="grid">
             {certs.map((c) => (
               <a key={c.code} className="cert-tile" href={`/api/certificados/${c.code}`} target="_blank">
-                <span className="medal">★</span>
+                <span className="medal"><Icon name="award" size={22} /></span>
                 <span><strong>{c.course_title}</strong><br /><span className="small muted">{fecha(c.issued_at)} · {c.code}</span></span>
               </a>
             ))}

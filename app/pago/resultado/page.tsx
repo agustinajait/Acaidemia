@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Icon } from '@/components/icons';
 import { requireUser } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { approvePaymentAndEnroll } from '@/lib/enrollment';
@@ -38,7 +39,7 @@ export default async function Resultado({ searchParams }: { searchParams: Promis
     <div className="container section narrow">
       {status === 'aprobado' ? (
         <div className="celebrate">
-          <div style={{ fontSize: '2.5rem' }}>🎉</div>
+          <div className="celebrate-ic"><Icon name="sparkles" size={30} /></div>
           <h1 style={{ fontSize: '1.8rem' }}>¡Pago aprobado!</h1>
           <p>Ya tenés acceso a <strong>{course?.title}</strong>.</p>
           <Link href={`/aprender/${course?.slug}`} className="btn">Empezar el curso</Link>

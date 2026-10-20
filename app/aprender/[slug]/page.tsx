@@ -4,6 +4,7 @@ import { requireUser } from '@/lib/auth';
 import { embedUrl } from '@/lib/format';
 import { submitQuiz, toggleLesson } from '@/app/actions/learning';
 import { Flash } from '@/components/ui';
+import { Icon } from '@/components/icons';
 import type { Lesson, QuizAttempt } from '@/lib/types';
 
 export default async function Aprender({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ l?: string; certificado?: string; quiz?: string; nota?: string; error?: string }> }) {
@@ -47,7 +48,7 @@ export default async function Aprender({ params, searchParams }: { params: Promi
 
       {(sp.certificado || cert) && (
         <div className="celebrate" style={{ margin: '16px 0' }}>
-          <div style={{ fontSize: '2.2rem' }}>⭐</div>
+          <div className="celebrate-ic"><Icon name="award" size={30} /></div>
           <h2>{sp.certificado ? '¡Completaste el curso!' : 'Curso aprobado'}</h2>
           <p style={{ marginBottom: 14 }}>Tu certificado ya está disponible y sumaste una estrella a tu perfil.</p>
           <div className="row" style={{ justifyContent: 'center' }}>
@@ -77,7 +78,7 @@ export default async function Aprender({ params, searchParams }: { params: Promi
             <ul className="lesson-list" style={{ borderTop: '1px solid var(--line)', marginTop: 8, paddingTop: 8 }}>
               <li>
                 <Link href={`/aprender/${slug}?quiz=1`} className={showQuiz ? 'active' : ''}>
-                  <span className={`check ${quizPassed || cert ? 'done' : ''}`}>{quizPassed || cert ? '✓' : quizUnlocked ? '' : '🔒'}</span>
+                  <span className={`check ${quizPassed || cert ? 'done' : ''}`}>{quizPassed || cert ? '✓' : quizUnlocked ? '' : <Icon name="lock" size={11} />}</span>
                   <span>Evaluación final</span>
                 </Link>
               </li>
@@ -139,7 +140,7 @@ function QuizView({ slug, courseId, quiz, passPct, enrolled, unlocked, passed, n
       {passed ? (
         <div className="flash ok">Ya aprobaste la evaluación{lastAttempt ? ` (${lastAttempt.score_pct}%)` : ''}.</div>
       ) : !unlocked ? (
-        <div className="card flat muted">🔒 Completá todas las lecciones para habilitar la evaluación final.</div>
+        <div className="card flat muted row"><Icon name="lock" size={18} /> Completá todas las lecciones para habilitar la evaluación final.</div>
       ) : (
         <>
           {nota && (

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Icon } from '@/components/icons';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { fecha } from '@/lib/format';
@@ -37,7 +38,7 @@ export default async function Perfil({ params }: { params: Promise<{ id: string 
           <div className="grid">
             {certs!.map((c) => (
               <Link key={c.code} href={`/certificados/${c.code}`} className="cert-tile">
-                <span className="medal">★</span>
+                <span className="medal"><Icon name="award" size={22} /></span>
                 <span><strong>{c.course_title}</strong><br /><span className="small muted">{fecha(c.issued_at)}{c.hours ? ` · ${String(c.hours).replace('.', ',')} h` : ''}</span></span>
               </Link>
             ))}
