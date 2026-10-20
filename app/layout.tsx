@@ -7,7 +7,7 @@ import { Icon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: { default: 'Acaiidemia — Aprender para generar impacto', template: '%s · Acaiidemia' },
-  description: 'Una plataforma para aprender haciendo, conectar saber, acción y propósito. Cursos y contenidos para emprendedores de impacto social. Un producto de HUEHACI.',
+  description: 'Formación práctica para acompañar personas, fortalecer comunidades y emprender con propósito. Un producto de HUEHACI.',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

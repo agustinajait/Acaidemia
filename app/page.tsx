@@ -19,8 +19,8 @@ export default async function Home() {
         <div className="container">
           <span className="badge brand">Un producto de HUEHACI</span>
           <h1 style={{ marginTop: 14 }}>Aprender para <em>generar impacto</em></h1>
-          <p className="lead">Una plataforma para aprender haciendo, conectar saber, acción y propósito.</p>
-          <p className="hero-note">Cursos y contenidos para emprendedores de impacto social, con certificado verificable por QR.</p>
+          <p className="lead">Formación práctica para acompañar personas, fortalecer comunidades y emprender con propósito.</p>
+          <p className="hero-note">Cursos para operadores sociocomunitarios, emprendedores socioeducativos y agentes de desarrollo humano y económico, con certificado verificable por QR.</p>
           <div className="row" style={{ marginTop: 24 }}>
             <Link href="/cursos" className="btn">Ver cursos</Link>
             <Link href="/mi-cuenta#docente" className="btn secondary">Quiero enseñar</Link>
