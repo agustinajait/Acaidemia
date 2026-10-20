@@ -5,6 +5,7 @@ import { embedUrl } from '@/lib/format';
 import { submitQuiz, toggleLesson } from '@/app/actions/learning';
 import { Flash } from '@/components/ui';
 import { Icon } from '@/components/icons';
+import { RichText } from '@/components/rich-text';
 import type { Lesson, QuizAttempt } from '@/lib/types';
 
 export default async function Aprender({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ l?: string; certificado?: string; quiz?: string; nota?: string; error?: string }> }) {
@@ -99,7 +100,7 @@ export default async function Aprender({ params, searchParams }: { params: Promi
             <>
               <h1 style={{ fontSize: '1.7rem' }}>{current.title}</h1>
               {video && <iframe className="video" src={video} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen title={current.title} />}
-              {current.content && <div className="card flat prose">{current.content}</div>}
+              {current.content && <div className="card flat lesson-body"><RichText text={current.content} /></div>}
               {enrollment && (
                 <form action={toggleLesson} className="row between">
                   <input type="hidden" name="lesson_id" value={current.id} />

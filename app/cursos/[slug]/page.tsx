@@ -4,6 +4,7 @@ import { getSession } from '@/lib/auth';
 import { ars } from '@/lib/format';
 import { Cover } from '@/components/ui';
 import { Icon } from '@/components/icons';
+import { RichText } from '@/components/rich-text';
 import { teacherName } from '@/lib/queries';
 
 export default async function CursoDetalle({ params }: { params: Promise<{ slug: string }> }) {
@@ -41,7 +42,7 @@ export default async function CursoDetalle({ params }: { params: Promise<{ slug:
           </p>
           <div className="card flat">
             <h2>Sobre el curso</h2>
-            <div className="prose">{course.description || 'Sin descripción.'}</div>
+            <RichText text={course.description || 'Sin descripción.'} />
           </div>
           <div className="card flat">
             <h2>Temario</h2>

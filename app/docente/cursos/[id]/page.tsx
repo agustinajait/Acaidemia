@@ -106,7 +106,7 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
                   <input type="hidden" name="course_id" value={course.id} /><input type="hidden" name="id" value={l.id} />
                   <div className="field"><label>Título</label><input type="text" name="title" defaultValue={l.title} required /></div>
                   <div className="field"><label>Video (YouTube, Vimeo o URL embebible)</label><input type="url" name="video_url" defaultValue={l.video_url ?? ''} /></div>
-                  <div className="field"><label>Contenido</label><textarea name="content" defaultValue={l.content} rows={6} /></div>
+                  <div className="field"><label>Contenido</label><div className="hint" style={{ marginTop: 0, marginBottom: 6 }}>Formato: <code>## Título</code> · <code>- lista</code> · <code>1. pasos</code> · <code>&gt; recuadro</code> · <code>**negrita**</code> · un párrafo que empieza con <code>Respuesta orientativa:</code> queda oculto hasta que el alumno lo abre.</div><textarea name="content" defaultValue={l.content} rows={6} /></div>
                   <button className="btn sm" type="submit">Guardar lección</button>
                 </form>
                 <div className="row" style={{ marginTop: 10 }}>
@@ -122,7 +122,7 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
                 <input type="hidden" name="course_id" value={course.id} />
                 <div className="field"><label>Título</label><input type="text" name="title" required /></div>
                 <div className="field"><label>Video (opcional)</label><input type="url" name="video_url" placeholder="https://www.youtube.com/watch?v=…" /></div>
-                <div className="field"><label>Contenido</label><textarea name="content" rows={5} /></div>
+                <div className="field"><label>Contenido</label><div className="hint" style={{ marginTop: 0, marginBottom: 6 }}>Formato: <code>## Título</code> · <code>- lista</code> · <code>1. pasos</code> · <code>&gt; recuadro</code> · <code>**negrita**</code> · un párrafo que empieza con <code>Respuesta orientativa:</code> queda oculto hasta que el alumno lo abre.</div><textarea name="content" rows={5} /></div>
                 <button className="btn" type="submit">+ Agregar</button>
               </form>
             </div>
