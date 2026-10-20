@@ -53,9 +53,10 @@ Vercel: importá el repo, cargá las mismas variables de entorno con `NEXT_PUBLI
 
 - RLS en todas las tablas. El contenido de las lecciones solo lo ven inscriptos, el docente dueño y admin; el temario público sale de la función `course_syllabus`.
 - Pagos, inscripciones y certificados se escriben solo desde el servidor (service role).
+- Evaluación final: las respuestas correctas solo las leen dueño/admin; el alumno recibe las preguntas por `course_quiz()` y la corrección se hace en el servidor.
 - Triggers impiden que un usuario cambie su propio rol o que un docente publique sin revisión.
 - Comprobantes en bucket privado `comprobantes/<user_id>/…`; el admin los ve con URLs firmadas de 30 min.
 
 ## Próximos pasos sugeridos
 
-Evaluación final (quiz) antes del certificado · emails transaccionales (pago aprobado, comprobante rechazado) · subida de portadas a Storage · cupones de descuento · split de pagos para docentes.
+emails transaccionales (pago aprobado, comprobante rechazado) · subida de portadas a Storage · cupones de descuento · split de pagos para docentes.

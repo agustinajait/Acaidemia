@@ -26,6 +26,7 @@ export interface Course {
   price_ars: number;
   status: CourseStatus;
   review_notes: string | null;
+  quiz_pass_pct: number;
   created_at: string;
 }
 
@@ -61,4 +62,23 @@ export interface Certificate {
   course_title: string;
   hours: number | null;
   issued_at: string;
+}
+
+/** Pregunta completa (solo dueño/admin la ven con la respuesta correcta). */
+export interface QuizQuestion {
+  id: string;
+  course_id: string;
+  position: number;
+  prompt: string;
+  options: string[];
+  correct_index: number;
+}
+
+export interface QuizAttempt {
+  id: string;
+  correct: number;
+  total: number;
+  score_pct: number;
+  passed: boolean;
+  created_at: string;
 }
