@@ -124,9 +124,10 @@ input:focus, textarea:focus, select:focus { outline: 2px solid color-mix(in srgb
 
 /* Hero */
 .hero { padding: 64px 0 40px; background: radial-gradient(900px 400px at 85% -10%, var(--brand-soft), transparent 70%); }
-.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 18ch; }
+.hero h1 { font-size: clamp(2.5rem, 7vw, 4.4rem); max-width: 16ch; letter-spacing: -.015em; }
 .hero h1 em { font-style: normal; color: var(--brand-bright); }
-.hero p.lead { font-size: 1.15rem; color: var(--muted); max-width: 52ch; }
+.hero p.lead { font-size: clamp(1.15rem, 2.2vw, 1.4rem); color: var(--ink); max-width: 38ch; margin-bottom: .6em; }
+.hero p.hero-note { color: var(--muted); max-width: 52ch; }
 .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
 
 /* Cajas dinámicas: entran escalonadas, se elevan y tienen un brillo lila que sigue al puntero */

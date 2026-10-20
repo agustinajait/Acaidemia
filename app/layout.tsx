@@ -6,8 +6,8 @@ import { signOut } from './actions/auth';
 import { Icon } from '@/components/icons';
 
 export const metadata: Metadata = {
-  title: { default: 'Acaiidemia — Cursos y contenidos para emprendedores de impacto social', template: '%s · Acaiidemia' },
-  description: 'Cursos y contenidos para emprendedores de impacto social, con certificado verificable. Un producto de HUEHACI.',
+  title: { default: 'Acaiidemia — Aprender para transformar', template: '%s · Acaiidemia' },
+  description: 'Una plataforma para aprender haciendo, conectar saber, acción y propósito. Cursos y contenidos para emprendedores de impacto social. Un producto de HUEHACI.',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -52,7 +52,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <img src="/logo.png" alt="" className="logo-mark" width={34} height={34} />
                 <span>Ac<b>aii</b>demia</span>
               </Link>
-              <p>Cursos y contenidos para emprendedores de impacto social.</p>
+              <p>Aprender para transformar. Cursos y contenidos para emprendedores de impacto social.</p>
             </div>
             <nav aria-label="Plataforma">
               <h4>Plataforma</h4>
