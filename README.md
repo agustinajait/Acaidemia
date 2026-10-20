@@ -1,6 +1,6 @@
-# Acaidemia · un producto de HUEHACI
+# Acaiidemia · un producto de HUEHACI
 
-Plataforma de cursos online pagos con certificado verificable por QR y estrellas en el perfil.
+Cursos y contenidos para emprendedores de impacto social, con certificado verificable por QR y estrellas en el perfil.
 
 **Stack:** Next.js 15 (App Router, Server Actions) · Supabase (Auth, Postgres con RLS, Storage) · Mercado Pago Checkout Pro · pdf-lib + qrcode.
 
