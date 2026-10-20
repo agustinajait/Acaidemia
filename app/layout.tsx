@@ -4,6 +4,7 @@ import './globals.css';
 import { getSession } from '@/lib/auth';
 import { signOut } from './actions/auth';
 import { Icon } from '@/components/icons';
+import { EMOOD_URL } from '@/lib/format';
 
 export const metadata: Metadata = {
   title: { default: 'Acaiidemia — Aprender para generar impacto', template: '%s · Acaiidemia' },
@@ -60,6 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <li><Link href="/cursos">Cursos</Link></li>
                 <li><Link href="/certificados">Verificar un certificado</Link></li>
                 <li><Link href="/mi-cuenta#docente">Quiero enseñar</Link></li>
+                <li><a href={EMOOD_URL} target="_blank" rel="noopener noreferrer">E‑Mood: emprendé con impacto</a></li>
               </ul>
             </nav>
             <nav aria-label="Tu cuenta">

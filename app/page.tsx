@@ -3,6 +3,7 @@ import { CourseCard } from '@/components/ui';
 import { Icon, type IconName } from '@/components/icons';
 import { Spotlight } from '@/components/spotlight';
 import { publishedCourses, teacherName } from '@/lib/queries';
+import { EMOOD_URL } from '@/lib/format';
 
 const FEATURES: { icon: IconName; title: string; text: string; cta: string; href: string }[] = [
   { icon: 'award', title: 'Certificado con QR', text: 'Cada certificado tiene un código único que cualquiera puede verificar online.', cta: 'Verificar uno', href: '/certificados' },
@@ -44,6 +45,29 @@ export default async function Home() {
               </Link>
             ))}
           </Spotlight>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: 0 }} aria-labelledby="emood-title">
+        <div className="container">
+          <div className="emood">
+            <div className="emood-copy">
+              <span className="badge brand">Del aprendizaje a la acción</span>
+              <h2 id="emood-title">¿Querés emprender y generar impacto?</h2>
+              <p>
+                Lo que aprendés en Acaiidemia lo podés poner en práctica con <strong>E‑Mood</strong>, la plataforma de HUEHACI que convierte
+                necesidades concretas en módulos operativos que emprendedores, prestadores y equipos territoriales pueden ejecutar y replicar.
+              </p>
+              <a className="btn" href={EMOOD_URL} target="_blank" rel="noopener noreferrer">
+                Conocer E‑Mood <Icon name="external" size={16} />
+              </a>
+            </div>
+            <ul className="emood-steps">
+              <li><span className="ic"><Icon name="sparkles" size={20} /></span><div><strong>Diseña</strong><span>Detecta oportunidades de trabajo y servicios.</span></div></li>
+              <li><span className="ic"><Icon name="layers" size={20} /></span><div><strong>Sistematiza</strong><span>Ordena módulos con evidencia y seguimiento.</span></div></li>
+              <li><span className="ic"><Icon name="growth" size={20} /></span><div><strong>Escala</strong><span>Replica modelos operativos en territorio.</span></div></li>
+            </ul>
+          </div>
         </div>
       </section>
 
