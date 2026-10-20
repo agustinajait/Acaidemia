@@ -47,7 +47,7 @@ export async function payWithMercadoPago(formData: FormData) {
   const isPublic = base.startsWith('https://');
   const pref = await mpPreference().create({
     body: {
-      items: [{ id: course.id, title: `Acaidemia · ${course.title}`, quantity: 1, unit_price: amount, currency_id: 'ARS' }],
+      items: [{ id: course.id, title: `Acaiidemia · ${course.title}`, quantity: 1, unit_price: amount, currency_id: 'ARS' }],
       payer: { email: user.email },
       external_reference: payment.id,
       back_urls: {
@@ -57,7 +57,7 @@ export async function payWithMercadoPago(formData: FormData) {
       },
       // MP solo acepta auto_return y notification_url con URLs públicas (https)
       ...(isPublic ? { auto_return: 'approved', notification_url: `${base}/api/mp/webhook` } : {}),
-      statement_descriptor: 'ACAIDEMIA',
+      statement_descriptor: 'ACAIIDEMIA',
     },
   });
   await db.from('payments').update({ mp_preference_id: pref.id }).eq('id', payment.id);

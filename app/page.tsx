@@ -9,8 +9,8 @@ export default async function Home() {
       <section className="hero">
         <div className="container">
           <span className="badge brand">Un producto de HUEHACI</span>
-          <h1 style={{ marginTop: 14 }}>Aprendé a tu ritmo. <em>Certificá</em> lo que sabés.</h1>
-          <p className="lead">Cursos online de docentes y especialistas, con certificado digital verificable por QR. Pagás con Mercado Pago o transferencia.</p>
+          <h1 style={{ marginTop: 14 }}>Cursos y contenidos para emprendedores de <em>impacto social</em></h1>
+          <p className="lead">Aprendé a tu ritmo con especialistas y obtené un certificado digital verificable por QR. Pagás con Mercado Pago o transferencia.</p>
           <div className="row" style={{ marginTop: 24 }}>
             <Link href="/cursos" className="btn">Ver cursos</Link>
             <Link href="/mi-cuenta#docente" className="btn secondary">Quiero enseñar</Link>

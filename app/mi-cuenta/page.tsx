@@ -102,7 +102,7 @@ export default async function MiCuenta({ searchParams }: { searchParams: Promise
           </form>
         </div>
         <div className="card" id="docente">
-          <h2>Enseñar en Acaidemia</h2>
+          <h2>Enseñar en Acaiidemia</h2>
           {profile.role !== 'alumno' ? (
             <><p className="muted">Ya tenés acceso al panel docente.</p><Link className="btn" href="/docente">Ir al panel docente</Link></>
           ) : profile.teacher_request ? (

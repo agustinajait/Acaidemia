@@ -15,7 +15,7 @@ export default async function Verificacion({ params }: { params: Promise<{ code:
         <div className="card" style={{ borderColor: 'var(--danger)' }}>
           <span className="badge danger">No válido</span>
           <h1 style={{ fontSize: '1.6rem', marginTop: 12 }}>No encontramos este certificado</h1>
-          <p className="muted">El código <span className="copy">{decodeURIComponent(code)}</span> no corresponde a ningún certificado emitido por Acaidemia.</p>
+          <p className="muted">El código <span className="copy">{decodeURIComponent(code)}</span> no corresponde a ningún certificado emitido por Acaiidemia.</p>
           <Link href="/certificados" className="btn secondary">Probar otro código</Link>
         </div>
       </div>
@@ -37,7 +37,7 @@ export default async function Verificacion({ params }: { params: Promise<{ code:
           <div><div className="small muted">Código</div><span className="copy">{c.code}</span></div>
         </div>
         <a className="btn" href={`/api/certificados/${c.code}`} target="_blank">Ver certificado PDF</a>
-        <p className="small muted" style={{ margin: 0 }}>Emitido por Acaidemia · HUEHACI</p>
+        <p className="small muted" style={{ margin: 0 }}>Emitido por Acaiidemia · HUEHACI</p>
       </div>
     </div>
   );
