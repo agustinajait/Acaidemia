@@ -95,7 +95,7 @@ async function Transfers({ db }: { db: DB }) {
 
 async function CoursesReview({ db }: { db: DB }) {
   const { data: rows } = await db.from('courses')
-    .select('id, slug, title, subtitle, price_ars, updated_at, owner:profiles(full_name), lessons(id)')
+    .select('id, slug, title, subtitle, price_ars, updated_at, owner:profiles!courses_owner_id_fkey(full_name), lessons(id)')
     .eq('status', 'en_revision').order('updated_at');
   if (!rows?.length) return <div className="card flat muted">No hay cursos esperando revisión.</div>;
   return (
@@ -144,7 +144,7 @@ async function Teachers({ db }: { db: DB }) {
 
 async function Sales({ db }: { db: DB }) {
   const { data: rows } = await db.from('payments')
-    .select('id, method, status, amount_ars, platform_fee_ars, teacher_amount_ars, created_at, user:profiles!payments_user_id_fkey(full_name), course:courses(title, owner:profiles(full_name, role))')
+    .select('id, method, status, amount_ars, platform_fee_ars, teacher_amount_ars, created_at, user:profiles!payments_user_id_fkey(full_name), course:courses(title, owner:profiles!courses_owner_id_fkey(full_name, role))')
     .neq('method', 'gratis').order('created_at', { ascending: false }).limit(200);
   const approved = (rows ?? []).filter((r) => r.status === 'aprobado');
   const sum = (k: 'amount_ars' | 'platform_fee_ars' | 'teacher_amount_ars') => approved.reduce((a, r) => a + Number(r[k]), 0);

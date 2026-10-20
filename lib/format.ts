@@ -37,3 +37,6 @@ export const statusLabel: Record<string, string> = {
   mercadopago: 'Mercado Pago', transferencia: 'Transferencia', gratis: 'Gratis',
   alumno: 'Alumno/a', docente: 'Docente', admin: 'Admin',
 };
+
+/** Opciones máximas por pregunta en el editor de la evaluación final. */
+export const QUIZ_OPTION_SLOTS = 5;

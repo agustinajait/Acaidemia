@@ -1,7 +1,7 @@
 import 'server-only';
 import { createClient } from './supabase/server';
 
-export const COURSE_CARD = 'id, slug, title, subtitle, cover_url, price_ars, hours, category, owner:profiles(full_name, role)';
+export const COURSE_CARD = 'id, slug, title, subtitle, cover_url, price_ars, hours, category, owner:profiles!courses_owner_id_fkey(full_name, role)';
 
 type Owner = { full_name: string; role: string } | null;
 export const teacherName = (owner: unknown) => {

@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { requireRole } from '@/lib/auth';
-import { saveCourse, setCourseStatus, deleteCourse, saveLesson, deleteLesson, moveLesson } from '@/app/actions/teacher';
+import { saveCourse, setCourseStatus, deleteCourse, saveLesson, deleteLesson, moveLesson, saveQuizSettings, saveQuizQuestion, deleteQuizQuestion } from '@/app/actions/teacher';
+import { QUIZ_OPTION_SLOTS } from '@/lib/format';
 import { Flash, StatusBadge } from '@/components/ui';
-import type { Course, Lesson } from '@/lib/types';
+import type { Course, Lesson, QuizQuestion } from '@/lib/types';
 
 export const metadata = { title: 'Editar curso' };
 
@@ -14,12 +15,15 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
   const isNew = id === 'nuevo';
   let course: Course | null = null;
   let lessons: Lesson[] = [];
+  let questions: QuizQuestion[] = [];
   if (!isNew) {
     const { data } = await supabase.from('courses').select('*').eq('id', id).maybeSingle();
     if (!data) notFound();
     course = data as Course;
     const { data: ls } = await supabase.from('lessons').select('*').eq('course_id', id).order('position').order('created_at');
     lessons = (ls ?? []) as Lesson[];
+    const { data: qs } = await supabase.from('quiz_questions').select('*').eq('course_id', id).order('position').order('created_at');
+    questions = (qs ?? []) as QuizQuestion[];
   }
   const isAdmin = profile.role === 'admin';
 
@@ -91,7 +95,7 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
       {course && (
         <section className="card" id="lecciones">
           <h2>Lecciones ({lessons.length})</h2>
-          <p className="small muted">El alumno obtiene el certificado al completar todas las lecciones.</p>
+          <p className="small muted">{questions.length ? 'El alumno obtiene el certificado al completar todas las lecciones y aprobar la evaluación final.' : 'El alumno obtiene el certificado al completar todas las lecciones.'}</p>
           <div className="stack">
             {lessons.map((l, i) => (
               <details key={l.id} className="card flat" style={{ padding: 14 }}>
@@ -123,6 +127,63 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
           </div>
         </section>
       )}
+
+      {course && (
+        <section className="card" id="evaluacion">
+          <h2>Evaluación final ({questions.length} {questions.length === 1 ? 'pregunta' : 'preguntas'})</h2>
+          <p className="small muted">
+            Opcional. Si cargás preguntas, el certificado solo se emite cuando el alumno completa las lecciones y aprueba con el mínimo que definas.
+            Puede reintentar las veces que quiera; solo ve su nota, no cuáles respuestas eran correctas.
+          </p>
+          <form action={saveQuizSettings} className="row" style={{ alignItems: 'flex-end', marginBottom: 16 }}>
+            <input type="hidden" name="course_id" value={course.id} />
+            <div className="field" style={{ flex: '0 1 220px', margin: 0 }}>
+              <label>Mínimo para aprobar (%)</label>
+              <input type="number" name="quiz_pass_pct" min={1} max={100} step={1} defaultValue={course.quiz_pass_pct ?? 70} />
+            </div>
+            <button className="btn secondary sm" type="submit">Guardar mínimo</button>
+          </form>
+          <div className="stack">
+            {questions.map((q, i) => (
+              <details key={q.id} className="card flat" style={{ padding: 14 }}>
+                <summary>{i + 1}. {q.prompt}</summary>
+                <QuestionForm courseId={course.id} q={q} />
+                <form action={deleteQuizQuestion} style={{ marginTop: 10 }}>
+                  <input type="hidden" name="course_id" value={course.id} /><input type="hidden" name="id" value={q.id} />
+                  <button className="btn ghost sm" style={{ color: 'var(--danger)' }}>Eliminar pregunta</button>
+                </form>
+              </details>
+            ))}
+            <div className="card flat" style={{ padding: 16, background: 'var(--surface-2)' }}>
+              <h3>Agregar pregunta</h3>
+              <QuestionForm courseId={course.id} />
+            </div>
+          </div>
+        </section>
+      )}
     </div>
+  );
+}
+
+function QuestionForm({ courseId, q }: { courseId: string; q?: QuizQuestion }) {
+  const slots = Math.max(QUIZ_OPTION_SLOTS, q?.options.length ?? 0);
+  return (
+    <form action={saveQuizQuestion} style={{ marginTop: q ? 14 : 0 }}>
+      <input type="hidden" name="course_id" value={courseId} />
+      {q && <input type="hidden" name="id" value={q.id} />}
+      <div className="field"><label>Pregunta</label><textarea name="prompt" defaultValue={q?.prompt} rows={2} required style={{ minHeight: 60 }} /></div>
+      <div className="field">
+        <label>Opciones (marcá la correcta; dejá vacías las que no uses)</label>
+        <div className="quiz-edit-options">
+          {Array.from({ length: slots }, (_, i) => (
+            <div key={i} className="quiz-edit-option">
+              <input type="radio" name="correct" value={i} defaultChecked={q ? q.correct_index === i : i === 0} aria-label={`Opción ${i + 1} es la correcta`} />
+              <input type="text" name={`option_${i}`} defaultValue={q?.options[i] ?? ''} placeholder={`Opción ${i + 1}`} required={i < 2} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <button className="btn sm" type="submit">{q ? 'Guardar pregunta' : '+ Agregar pregunta'}</button>
+    </form>
   );
 }

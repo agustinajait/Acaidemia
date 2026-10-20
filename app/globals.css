@@ -154,3 +154,14 @@ th { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color:
 .footer { border-top: 1px solid var(--line); padding: 28px 0; margin-top: 48px; color: var(--muted); font-size: .88rem; }
 details summary { cursor: pointer; font-weight: 600; }
 .copy { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface-2); padding: 2px 8px; border-radius: 6px; }
+
+/* Evaluación final */
+.quiz-question { border: 1px solid var(--line); margin: 0; }
+.quiz-question legend { padding: 0 6px; font-size: 1rem; line-height: 1.4; }
+.quiz-option { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; cursor: pointer; }
+.quiz-option:hover { background: var(--surface-2); }
+.quiz-option input { margin-top: 3px; flex: none; }
+.quiz-edit-options > * + * { margin-top: 8px; }
+.quiz-edit-option { display: flex; gap: 10px; align-items: center; }
+.quiz-edit-option input[type=radio] { flex: none; width: 18px; height: 18px; }
+.quiz-edit-option input[type=text] { flex: 1; }

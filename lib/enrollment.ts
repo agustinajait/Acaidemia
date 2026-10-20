@@ -45,25 +45,40 @@ function newCode() {
   return `ACA-${raw.slice(0, 5)}-${raw.slice(5)}`;
 }
 
-/** Emite el certificado si el alumno completó todas las lecciones. Devuelve el código o null. */
+/** Estado de cursada: lecciones completas y, si el curso tiene evaluación final, si la aprobó. */
+export async function courseCompletion(userId: string, courseId: string) {
+  const db = createAdminClient();
+  const [{ data: lessons }, { count: quizTotal }, { data: passedAttempt }] = await Promise.all([
+    db.from('lessons').select('id').eq('course_id', courseId),
+    db.from('quiz_questions').select('id', { count: 'exact', head: true }).eq('course_id', courseId),
+    db.from('quiz_attempts').select('id').eq('user_id', userId).eq('course_id', courseId).eq('passed', true).limit(1).maybeSingle(),
+  ]);
+  let lessonsDone = false;
+  if (lessons?.length) {
+    const { count } = await db
+      .from('lesson_progress')
+      .select('lesson_id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .in('lesson_id', lessons.map((l) => l.id));
+    lessonsDone = (count ?? 0) >= lessons.length;
+  }
+  return { lessonsDone, hasQuiz: (quizTotal ?? 0) > 0, quizPassed: !!passedAttempt };
+}
+
+/**
+ * Emite el certificado si el alumno completó todas las lecciones y, cuando el curso
+ * tiene evaluación final, la aprobó. Devuelve el código o null.
+ */
 export async function issueCertificateIfComplete(userId: string, courseId: string) {
   const db = createAdminClient();
 
   const { data: existing } = await db.from('certificates').select('code').eq('user_id', userId).eq('course_id', courseId).maybeSingle();
   if (existing) return existing.code as string;
 
-  const [{ data: lessons }, { data: enrollment }] = await Promise.all([
-    db.from('lessons').select('id').eq('course_id', courseId),
-    db.from('enrollments').select('user_id').eq('user_id', userId).eq('course_id', courseId).maybeSingle(),
-  ]);
-  if (!enrollment || !lessons?.length) return null;
-
-  const { count } = await db
-    .from('lesson_progress')
-    .select('lesson_id', { count: 'exact', head: true })
-    .eq('user_id', userId)
-    .in('lesson_id', lessons.map((l) => l.id));
-  if ((count ?? 0) < lessons.length) return null;
+  const { data: enrollment } = await db.from('enrollments').select('user_id').eq('user_id', userId).eq('course_id', courseId).maybeSingle();
+  if (!enrollment) return null;
+  const status = await courseCompletion(userId, courseId);
+  if (!status.lessonsDone || (status.hasQuiz && !status.quizPassed)) return null;
 
   const [{ data: profile }, { data: course }] = await Promise.all([
     db.from('profiles').select('full_name').eq('id', userId).single(),

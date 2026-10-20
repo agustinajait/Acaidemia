@@ -10,15 +10,17 @@ export default async function CursoDetalle({ params }: { params: Promise<{ slug:
   const { supabase, user } = await getSession();
   const { data: course } = await supabase
     .from('courses')
-    .select('*, owner:profiles(id, full_name, role, bio)')
+    .select('*, owner:profiles!courses_owner_id_fkey(id, full_name, role, bio)')
     .eq('slug', slug)
     .maybeSingle();
   if (!course) notFound();
 
-  const [{ data: syllabus }, enrollment] = await Promise.all([
+  const [{ data: syllabus }, enrollment, { data: quizCount }] = await Promise.all([
     supabase.rpc('course_syllabus', { c: course.id }),
     user ? supabase.from('enrollments').select('user_id').eq('course_id', course.id).eq('user_id', user.id).maybeSingle() : Promise.resolve({ data: null }),
+    supabase.rpc('course_quiz_count', { c: course.id }),
   ]);
+  const hasQuiz = Number(quizCount ?? 0) > 0;
   const enrolled = !!enrollment.data;
   const owner = Array.isArray(course.owner) ? course.owner[0] : course.owner;
   const lessons = (syllabus ?? []) as { id: string; title: string }[];
@@ -45,6 +47,7 @@ export default async function CursoDetalle({ params }: { params: Promise<{ slug:
             <ol style={{ paddingLeft: 20, margin: 0 }}>
               {lessons.map((l) => <li key={l.id} style={{ padding: '4px 0' }}>{l.title}</li>)}
             </ol>
+            {hasQuiz && <p className="small" style={{ margin: '10px 0 0' }}>📝 <strong>Evaluación final</strong> ({Number(quizCount)} preguntas)</p>}
           </div>
         </div>
 
@@ -59,7 +62,7 @@ export default async function CursoDetalle({ params }: { params: Promise<{ slug:
             ) : null}
             <ul className="small muted" style={{ paddingLeft: 18, margin: 0 }}>
               <li>Acceso de por vida</li>
-              <li>Certificado digital con QR al completarlo</li>
+              <li>Certificado digital con QR {hasQuiz ? 'al completarlo y aprobar la evaluación final' : 'al completarlo'}</li>
               <li>+1 ⭐ en tu perfil público</li>
               <li>Pagá con Mercado Pago o transferencia</li>
             </ul>

@@ -2,7 +2,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { requireRole } from '@/lib/auth';
-import { slugify } from '@/lib/format';
+import { QUIZ_OPTION_SLOTS, slugify } from '@/lib/format';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
 const numOrNull = (f: FormData, k: string) => (str(f, k) === '' ? null : Number(str(f, k)));
@@ -109,4 +109,61 @@ export async function moveLesson(formData: FormData) {
   }
   revalidatePath(`/docente/cursos/${courseId}`);
   redirect(`/docente/cursos/${courseId}#lecciones`);
+}
+
+// ---------- Evaluación final ----------
+
+
+export async function saveQuizSettings(formData: FormData) {
+  const { supabase } = await requireRole(['docente', 'admin'], '/docente');
+  const courseId = str(formData, 'course_id');
+  const pct = Math.round(Number(str(formData, 'quiz_pass_pct')));
+  if (!(pct >= 1 && pct <= 100)) redirect(`/docente/cursos/${courseId}?error=${encodeURIComponent('El mínimo para aprobar va de 1 a 100%')}#evaluacion`);
+  const { error } = await supabase.from('courses').update({ quiz_pass_pct: pct }).eq('id', courseId);
+  if (error) redirect(`/docente/cursos/${courseId}?error=${encodeURIComponent(error.message)}#evaluacion`);
+  revalidatePath(`/docente/cursos/${courseId}`);
+  redirect(`/docente/cursos/${courseId}?ok=1#evaluacion`);
+}
+
+export async function saveQuizQuestion(formData: FormData) {
+  const { supabase } = await requireRole(['docente', 'admin'], '/docente');
+  const courseId = str(formData, 'course_id');
+  const id = str(formData, 'id');
+  const back = (msg: string) => redirect(`/docente/cursos/${courseId}?error=${encodeURIComponent(msg)}#evaluacion`);
+
+  const prompt = str(formData, 'prompt');
+  if (!prompt) back('Escribí la pregunta');
+  const raw = Array.from({ length: QUIZ_OPTION_SLOTS }, (_, i) => str(formData, `option_${i}`));
+  const correctRaw = str(formData, 'correct');
+  if (correctRaw === '' || !raw[Number(correctRaw)]) back('Marcá cuál es la opción correcta (tiene que tener texto)');
+
+  // Se descartan las opciones vacías y se recalcula el índice de la correcta
+  const options: string[] = [];
+  let correctIndex = -1;
+  raw.forEach((o, i) => {
+    if (!o) return;
+    if (i === Number(correctRaw)) correctIndex = options.length;
+    options.push(o);
+  });
+  if (options.length < 2) back('Cada pregunta necesita al menos 2 opciones');
+
+  const fields = { prompt, options, correct_index: correctIndex };
+  if (id) {
+    const { error } = await supabase.from('quiz_questions').update(fields).eq('id', id);
+    if (error) back(error.message);
+  } else {
+    const { data: last } = await supabase.from('quiz_questions').select('position').eq('course_id', courseId).order('position', { ascending: false }).limit(1).maybeSingle();
+    const { error } = await supabase.from('quiz_questions').insert({ ...fields, course_id: courseId, position: (last?.position ?? -1) + 1 });
+    if (error) back(error.message);
+  }
+  revalidatePath(`/docente/cursos/${courseId}`);
+  redirect(`/docente/cursos/${courseId}?ok=1#evaluacion`);
+}
+
+export async function deleteQuizQuestion(formData: FormData) {
+  const { supabase } = await requireRole(['docente', 'admin'], '/docente');
+  const courseId = str(formData, 'course_id');
+  await supabase.from('quiz_questions').delete().eq('id', str(formData, 'id'));
+  revalidatePath(`/docente/cursos/${courseId}`);
+  redirect(`/docente/cursos/${courseId}#evaluacion`);
 }
