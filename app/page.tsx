@@ -29,7 +29,7 @@ export default async function Home() {
           </div>
           <figure className="hero-art">
             <img
-              src="/hero.jpg" srcSet="/hero-900.jpg 900w, /hero.jpg 1584w" sizes="(max-width: 860px) 100vw, 1280px"
+              src="/hero.jpg" srcSet="/hero-900.jpg 900w, /hero.jpg 1584w" sizes="(max-width: 860px) 100vw, 640px"
               width={1584} height={672} fetchPriority="high"
               alt="Lamparita de alambre lila con monedas adentro, rodeada de amatistas, lavanda y un camino de alambre con personas, un libro y un árbol"
             />
