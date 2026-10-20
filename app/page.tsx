@@ -48,6 +48,21 @@ export default async function Home() {
         </div>
       </section>
 
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="row between" style={{ marginBottom: 18 }}>
+            <h2 style={{ margin: 0 }}>Cursos recientes</h2>
+            <Link href="/cursos" className="btn ghost sm">Ver todos <Icon name="arrow" size={16} /></Link>
+          </div>
+          {courses.length ? (
+            <Spotlight className="grid">{courses.map((c, i) => <CourseCard key={c.id} c={c} teacher={teacherName(c.owner)} index={i} />)}</Spotlight>
+          ) : (
+            <div className="card flat muted">Todavía no hay cursos publicados.</div>
+          )}
+        </div>
+      </section>
+
       <section className="section" style={{ paddingTop: 0 }} aria-labelledby="emood-title">
         <div className="container">
           <div className="emood">
@@ -68,20 +83,6 @@ export default async function Home() {
               <li><span className="ic"><Icon name="growth" size={20} /></span><div><strong>Escala</strong><span>Replica modelos operativos en territorio.</span></div></li>
             </ul>
           </div>
-        </div>
-      </section>
-
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <div className="row between" style={{ marginBottom: 18 }}>
-            <h2 style={{ margin: 0 }}>Cursos recientes</h2>
-            <Link href="/cursos" className="btn ghost sm">Ver todos <Icon name="arrow" size={16} /></Link>
-          </div>
-          {courses.length ? (
-            <Spotlight className="grid">{courses.map((c, i) => <CourseCard key={c.id} c={c} teacher={teacherName(c.owner)} index={i} />)}</Spotlight>
-          ) : (
-            <div className="card flat muted">Todavía no hay cursos publicados.</div>
-          )}
         </div>
       </section>
     </>
