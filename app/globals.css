@@ -105,7 +105,13 @@ input:focus, textarea:focus, select:focus { outline: 2px solid color-mix(in srgb
 .course-card { display: flex; flex-direction: column; text-decoration: none; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; }
 .course-card:hover { border-color: color-mix(in srgb, var(--brand-bright) 55%, var(--line)); transform: translateY(-3px); box-shadow: 0 2px 4px rgba(43,41,48,.06), 0 14px 32px rgba(91,38,120,.12); }
 .cover { aspect-ratio: 16/9; background: linear-gradient(135deg, var(--brand-soft), var(--surface-2)); display: grid; place-items: center; overflow: hidden; }
-.cover img { width: 100%; height: 100%; object-fit: cover; }
+.cover { position: relative; }
+.cover img, .cover video, .cover iframe { width: 100%; height: 100%; object-fit: cover; display: block; border: 0; }
+.play-badge { position: absolute; inset: 0; margin: auto; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; padding-left: 3px; background: rgba(43, 41, 48, .62); color: #fff; font-size: 1rem; pointer-events: none; }
+.cover-field .cover-preview { max-width: 420px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 14px; }
+.cover-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .cover-options { grid-template-columns: 1fr; } }
+.cover-option-title { font-weight: 600; font-size: .88rem; margin-bottom: 6px; }
 .cover .initials { font-family: var(--display); font-weight: 800; font-size: 2.4rem; color: var(--brand-bright); }
 .course-card .body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .course-card h3 { margin: 0; }

@@ -53,7 +53,7 @@ export default async function CursoDetalle({ params }: { params: Promise<{ slug:
         </div>
 
         <aside className="card" style={{ position: 'sticky', top: 84, padding: 0, overflow: 'hidden' }}>
-          <Cover url={course.cover_url} title={course.title} />
+          <Cover url={course.cover_url} title={course.title} full />
           <div style={{ padding: 20 }} className="stack">
             <div className="price" style={{ fontSize: '1.8rem' }}>{ars(course.price_ars)}</div>
             {enrolled ? (

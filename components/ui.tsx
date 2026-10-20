@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ars, statusLabel } from '@/lib/format';
+import { mediaOf } from '@/lib/media';
 
 export function Flash({ ok, error, okText = 'Cambios guardados.' }: { ok?: string; error?: string; okText?: string }) {
   if (error) return <div className="flash error" role="alert">{error}</div>;
@@ -14,14 +15,37 @@ export function StatusBadge({ s }: { s: string }) {
   return <span className={`badge ${tone[s] ?? ''}`}>{statusLabel[s] ?? s}</span>;
 }
 
-export function Cover({ url, title }: { url: string | null; title: string }) {
+/**
+ * Portada del curso: imagen, video (se reproduce solo, sin sonido, en loop) o YouTube/Vimeo.
+ * `full` es la versión grande de la página del curso: el video tiene controles y YouTube/Vimeo se embeben.
+ */
+export function Cover({ url, title, full = false }: { url: string | null; title: string; full?: boolean }) {
+  const media = mediaOf(url);
   const STOP = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'e', 'en', 'para', 'con', 'a', 'al', 'un', 'una', 'por']);
   const words = title.split(/\s+/).filter(Boolean);
   const main = words.filter((w) => !STOP.has(w.toLowerCase()));
   const initials = (main.length ? main : words).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
   return (
     <div className="cover">
-      {url ? <img src={url} alt="" /> : <span className="initials">{initials}</span>}
+      {!media ? (
+        <span className="initials">{initials}</span>
+      ) : media.kind === 'image' ? (
+        <img src={media.src} alt="" loading={full ? undefined : 'lazy'} />
+      ) : media.kind === 'video' ? (
+        <video src={media.src} autoPlay muted loop playsInline preload="metadata" controls={full} aria-label={`Video de portada: ${title}`} />
+      ) : full ? (
+        <iframe src={media.embed} title={`Video: ${title}`} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
+      ) : media.kind === 'youtube' ? (
+        <>
+          <img src={media.thumb} alt="" loading="lazy" />
+          <span className="play-badge" aria-hidden="true">▶</span>
+        </>
+      ) : (
+        <>
+          <span className="initials">{initials}</span>
+          <span className="play-badge" aria-hidden="true">▶</span>
+        </>
+      )}
     </div>
   );
 }

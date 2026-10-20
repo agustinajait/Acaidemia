@@ -4,6 +4,7 @@ import { requireRole } from '@/lib/auth';
 import { saveCourse, setCourseStatus, deleteCourse, saveLesson, deleteLesson, moveLesson, saveQuizSettings, saveQuizQuestion, deleteQuizQuestion } from '@/app/actions/teacher';
 import { QUIZ_OPTION_SLOTS } from '@/lib/format';
 import { Icon } from '@/components/icons';
+import { CoverField } from '@/components/cover-field';
 import { Flash, StatusBadge } from '@/components/ui';
 import type { Course, Lesson, QuizQuestion } from '@/lib/types';
 
@@ -51,7 +52,7 @@ export default async function EditarCurso({ params, searchParams }: { params: Pr
               <div className="field" style={{ flex: '1 1 140px' }}><label>Horas</label><input type="number" name="hours" min={0} step="0.5" defaultValue={course?.hours ?? ''} /><div className="hint">Figura en el certificado</div></div>
               <div className="field" style={{ flex: '1 1 160px' }}><label>Categoría</label><input type="text" name="category" defaultValue={course?.category ?? ''} placeholder="Ej: Gestión pública" /></div>
             </div>
-            <div className="field"><label>Imagen de portada (URL)</label><input type="url" name="cover_url" defaultValue={course?.cover_url ?? ''} /></div>
+            <CoverField defaultValue={course?.cover_url ?? null} title={course?.title ?? ''} />
             {course?.status === 'publicado' && !isAdmin && <p className="hint">Al guardar cambios, el curso vuelve a revisión antes de republicarse.</p>}
             <button className="btn" type="submit">{isNew ? 'Crear curso' : 'Guardar'}</button>
           </form>
