@@ -25,8 +25,12 @@ Plataforma de cursos online pagos con certificado verificable por QR y estrellas
    ```
 5. Registrate en http://localhost:3000/registro y convertite en admin desde el SQL Editor:
    ```sql
+   begin;
+   -- el trigger protect_profile_role solo deja cambiar roles al service_role o a un admin
+   select set_config('request.jwt.claims', '{"role":"service_role"}', true);
    update public.profiles set role = 'admin'
    where id = (select id from auth.users where email = 'TU_MAIL');
+   commit;
    ```
 6. En **Admin → Configuración** cargá CBU/alias y la comisión.
 
