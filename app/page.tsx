@@ -25,6 +25,13 @@ export default async function Home() {
             <Link href="/cursos" className="btn">Ver cursos</Link>
             <Link href="/mi-cuenta#docente" className="btn secondary">Quiero enseñar</Link>
           </div>
+          <figure className="hero-art">
+            <img
+              src="/hero.jpg" srcSet="/hero-900.jpg 900w, /hero.jpg 1584w" sizes="(max-width: 1120px) 100vw, 1088px"
+              width={1584} height={672} fetchPriority="high"
+              alt="Lamparita de alambre lila con monedas adentro, rodeada de amatistas, lavanda y un camino de alambre con personas, un libro y un árbol"
+            />
+          </figure>
         </div>
       </section>
 
