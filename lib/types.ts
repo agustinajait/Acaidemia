@@ -82,3 +82,14 @@ export interface QuizAttempt {
   passed: boolean;
   created_at: string;
 }
+
+export interface Specialist {
+  id: string;
+  full_name: string;
+  category: string;
+  bio: string;
+  photo_url: string | null;
+  linkedin_url: string | null;
+  position: number;
+  published: boolean;
+}

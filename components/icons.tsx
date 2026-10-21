@@ -12,6 +12,7 @@ const paths = {
   arrow: (<path d="M5 12h14M13 6l6 6-6 6" />),
   layers: (<><path d="m12 2 10 5-10 5L2 7z" /><path d="m2 12 10 5 10-5M2 17l10 5 10-5" /></>),
   growth: (<><path d="M3 17l6-6 4 4 8-8" /><path d="M14 7h7v7" /></>),
+  linkedin: (<><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10.5V17M12 17v-3.6a2.2 2.2 0 0 1 4.4 0V17M12 10.5V17" /><circle cx="8" cy="7.4" r=".9" fill="currentColor" stroke="none" /></>),
   external: (<><path d="M14 4h6v6M20 4l-9 9" /><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></>),
 } as const;
 

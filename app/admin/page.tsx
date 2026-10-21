@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { requireRole } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { ars, fecha, statusLabel } from '@/lib/format';
-import { approveTransfer, rejectTransfer, reviewCourse, decideTeacher, saveSettings } from '@/app/actions/admin';
+import { approveTransfer, rejectTransfer, reviewCourse, decideTeacher, saveSettings, saveSpecialist, deleteSpecialist } from '@/app/actions/admin';
+import { PhotoField } from '@/components/photo-field';
+import type { Specialist } from '@/lib/types';
 import { Flash, StatusBadge } from '@/components/ui';
 
 export const metadata = { title: 'Administración' };
@@ -12,14 +14,15 @@ const TABS = [
   ['transferencias', 'Transferencias'],
   ['cursos', 'Cursos a revisar'],
   ['docentes', 'Solicitudes de especialistas'],
+  ['especialistas', 'Especialistas'],
   ['ventas', 'Ventas'],
   ['config', 'Configuración'],
 ] as const;
 
 const one = <T,>(x: T | T[]) => (Array.isArray(x) ? x[0] : x);
 
-export default async function Admin({ searchParams }: { searchParams: Promise<{ tab?: string; ok?: string }> }) {
-  const { tab = 'transferencias', ok } = await searchParams;
+export default async function Admin({ searchParams }: { searchParams: Promise<{ tab?: string; ok?: string; error?: string; editar?: string }> }) {
+  const { tab = 'transferencias', ok, error, editar } = await searchParams;
   await requireRole(['admin'], '/admin');
   const db = createAdminClient();
 
@@ -33,7 +36,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
   return (
     <div className="container section">
       <h1>Administración</h1>
-      <Flash ok={ok} okText="Listo." />
+      <Flash ok={ok} error={error} okText="Listo." />
       <nav className="tabs">
         {TABS.map(([k, label]) => (
           <Link key={k} href={`/admin?tab=${k}`} className={tab === k ? 'active' : ''}>
@@ -44,6 +47,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
       {tab === 'transferencias' && <Transfers db={db} />}
       {tab === 'cursos' && <CoursesReview db={db} />}
       {tab === 'docentes' && <Teachers db={db} />}
+      {tab === 'especialistas' && <Specialists db={db} editId={editar} />}
       {tab === 'ventas' && <Sales db={db} />}
       {tab === 'config' && <Settings db={db} />}
     </div>
@@ -204,6 +208,56 @@ async function Settings({ db }: { db: DB }) {
         <div className="field"><label>Indicaciones para el alumno</label><textarea name="transfer_notes" defaultValue={s?.transfer_notes} rows={3} /></div>
         <button className="btn" type="submit">Guardar configuración</button>
       </form>
+    </div>
+  );
+}
+
+async function Specialists({ db, editId }: { db: DB; editId?: string }) {
+  const { data } = await db.from('specialists').select('*').order('position').order('full_name');
+  const rows = (data ?? []) as Specialist[];
+  const editing = editId ? rows.find((r) => r.id === editId) ?? null : null;
+  const categories = [...new Set(rows.map((r) => r.category.trim()).filter(Boolean))];
+  return (
+    <div className="two-col">
+      <div className="stack">
+        <div className="row between">
+          <p className="muted small" style={{ margin: 0 }}>Se muestran en <Link href="/especialistas" target="_blank">/especialistas</Link>, ordenados por número de orden.</p>
+          {editing && <Link className="btn secondary sm" href="/admin?tab=especialistas">+ Nuevo</Link>}
+        </div>
+        {!rows.length && <div className="card flat muted">Todavía no cargaste especialistas. Usá el formulario.</div>}
+        {rows.map((s) => (
+          <div key={s.id} className="card flat row" style={{ padding: 14, gap: 14, opacity: s.published ? 1 : .6 }}>
+            <span className="avatar sm">{s.photo_url ? <img src={s.photo_url} alt="" /> : s.full_name.slice(0, 1)}</span>
+            <div style={{ flex: 1, minWidth: 160 }}>
+              <strong>{s.full_name}</strong> {!s.published && <span className="badge">Oculto</span>}
+              <div className="small muted">{s.category || 'Sin categoría'} · orden {s.position}{s.linkedin_url ? ' · LinkedIn ✓' : ''}</div>
+            </div>
+            <Link className="btn secondary sm" href={`/admin?tab=especialistas&editar=${s.id}#form-especialista`}>Editar</Link>
+            <form action={deleteSpecialist}><input type="hidden" name="id" value={s.id} /><button className="btn ghost sm" style={{ color: 'var(--danger)' }}>Eliminar</button></form>
+          </div>
+        ))}
+      </div>
+      <div className="card" id="form-especialista">
+        <h3>{editing ? `Editar: ${editing.full_name}` : 'Nuevo especialista'}</h3>
+        <form action={saveSpecialist} key={editing?.id ?? 'nuevo'}>
+          {editing && <input type="hidden" name="id" value={editing.id} />}
+          <div className="field"><label>Nombre y apellido</label><input type="text" name="full_name" defaultValue={editing?.full_name} required /></div>
+          <div className="field">
+            <label>Categoría</label>
+            <input type="text" name="category" defaultValue={editing?.category} list="categorias-especialistas" placeholder="Ej: Abordaje territorial" />
+            <datalist id="categorias-especialistas">{categories.map((c) => <option key={c} value={c} />)}</datalist>
+            <div className="hint">Aparece como etiqueta y sirve para filtrar.</div>
+          </div>
+          <PhotoField name="photo_url" defaultValue={editing?.photo_url ?? null} />
+          <div className="field"><label>Bio</label><textarea name="bio" defaultValue={editing?.bio} rows={5} placeholder="Trayectoria, experiencia y temas que enseña." /></div>
+          <div className="field"><label>LinkedIn</label><input type="text" inputMode="url" name="linkedin_url" defaultValue={editing?.linkedin_url ?? ''} placeholder="https://www.linkedin.com/in/…" /></div>
+          <div className="row" style={{ alignItems: 'flex-end' }}>
+            <div className="field" style={{ flex: '0 1 120px' }}><label>Orden</label><input type="number" name="position" defaultValue={editing?.position ?? rows.length} step={1} /></div>
+            <label className="row" style={{ gap: 8, fontWeight: 500, marginBottom: 22 }}><input type="checkbox" name="published" defaultChecked={editing ? editing.published : true} /> Visible en el sitio</label>
+          </div>
+          <button className="btn" type="submit">{editing ? 'Guardar cambios' : 'Agregar especialista'}</button>
+        </form>
+      </div>
     </div>
   );
 }
