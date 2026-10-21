@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { requireRole } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { approvePaymentAndEnroll } from '@/lib/enrollment';
+import { linkedinUrl, mediaOf } from '@/lib/media';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
 
@@ -61,4 +62,47 @@ export async function saveSettings(formData: FormData) {
   }).eq('id', 1);
   revalidatePath('/admin');
   redirect('/admin?tab=config&ok=1');
+}
+
+// ---------- Especialistas (directorio público) ----------
+export async function saveSpecialist(formData: FormData) {
+  await requireRole(['admin'], '/admin');
+  const db = createAdminClient();
+  const id = str(formData, 'id');
+  const back = (msg: string) => redirect(`/admin?tab=especialistas&error=${encodeURIComponent(msg)}${id ? `&editar=${id}` : ''}#form-especialista`);
+
+  const full_name = str(formData, 'full_name');
+  if (!full_name) back('Poné el nombre del/la especialista');
+  const photoRaw = str(formData, 'photo_url');
+  const photo = mediaOf(photoRaw);
+  if (photoRaw && (!photo || photo.kind !== 'image')) back('La foto tiene que ser una imagen (link https a JPG, PNG o WebP)');
+  const liRaw = str(formData, 'linkedin_url');
+  const linkedin = linkedinUrl(liRaw);
+  if (liRaw && !linkedin) back('El link de LinkedIn no es válido (tiene que ser de linkedin.com)');
+
+  const fields = {
+    full_name,
+    category: str(formData, 'category'),
+    bio: str(formData, 'bio'),
+    photo_url: photoRaw || null,
+    linkedin_url: linkedin,
+    position: Math.round(Number(str(formData, 'position') || 0)) || 0,
+    published: formData.get('published') === 'on',
+    updated_at: new Date().toISOString(),
+  };
+  const { error } = id
+    ? await db.from('specialists').update(fields).eq('id', id)
+    : await db.from('specialists').insert(fields);
+  if (error) back(error.message);
+  revalidatePath('/especialistas');
+  revalidatePath('/admin');
+  redirect('/admin?tab=especialistas&ok=1');
+}
+
+export async function deleteSpecialist(formData: FormData) {
+  await requireRole(['admin'], '/admin');
+  const db = createAdminClient();
+  await db.from('specialists').delete().eq('id', str(formData, 'id'));
+  revalidatePath('/especialistas');
+  redirect('/admin?tab=especialistas&ok=1');
 }

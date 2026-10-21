@@ -33,3 +33,19 @@ export function mediaOf(url: string | null | undefined): Media | null {
 /** Tipos y tamaño permitidos para subir una portada (deben coincidir con el bucket "portadas"). */
 export const COVER_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime';
 export const COVER_MAX_MB = 50;
+
+/** Link de LinkedIn válido (https, dominio linkedin.com). Devuelve la URL normalizada o null. */
+export function linkedinUrl(raw: string | null | undefined): string | null {
+  const s = (raw ?? '').trim();
+  if (!s) return null;
+  try {
+    const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
+    const host = u.hostname.toLowerCase();
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return null;
+    if (host !== 'linkedin.com' && !host.endsWith('.linkedin.com')) return null;
+    u.protocol = 'https:';
+    return u.toString();
+  } catch {
+    return null;
+  }
+}

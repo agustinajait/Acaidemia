@@ -196,6 +196,22 @@ input:focus, textarea:focus, select:focus { outline: 2px solid color-mix(in srgb
 .emood-steps span:not(.ic) { color: var(--muted); font-size: .9rem; }
 @media (max-width: 860px) { .emood { grid-template-columns: 1fr; padding: 26px 22px; } }
 
+/* Especialistas */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.chips a { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; font-size: .88rem; font-weight: 600; color: var(--muted); }
+.chips a:hover { border-color: var(--brand-bright); color: var(--ink); }
+.chips a.active { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+.specialists { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.specialist { gap: 0; }
+.specialist-head { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; }
+.specialist-head h3 { margin: 0 0 6px; }
+.specialist-head .badge { text-decoration: none; }
+.specialist .avatar { width: 84px; height: 84px; font-size: 1.6rem; overflow: hidden; border: 3px solid var(--surface); box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-bright) 45%, transparent); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.avatar.sm { width: 48px; height: 48px; font-size: 1.1rem; overflow: hidden; }
+.specialist-bio { color: var(--muted); font-size: .93rem; white-space: pre-line; margin: 0 0 16px; }
+.specialist .linkedin { margin-top: auto; align-self: flex-start; position: relative; z-index: 2; }
+
 /* Íconos */
 .inline-ic { display: inline-block; vertical-align: -3px; margin-left: 8px; color: var(--brand); }
 .brand-ic { color: var(--brand); flex: none; }

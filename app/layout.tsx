@@ -29,10 +29,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </Link>
             <nav className="nav">
               <Link href="/cursos">Cursos</Link>
+              <Link href="/especialistas" className="hide-sm">Especialistas</Link>
               {profile ? (
                 <>
                   <Link href="/mi-cuenta">Mis cursos</Link>
-                  {(profile.role === 'docente' || profile.role === 'admin') && <Link href="/docente" className="hide-sm">Especialista</Link>}
+                  {(profile.role === 'docente' || profile.role === 'admin') && <Link href="/docente" className="hide-sm">Mi panel</Link>}
                   {profile.role === 'admin' && <Link href="/admin" className="hide-sm">Admin</Link>}
                   <form action={signOut}><button className="btn ghost sm" type="submit">Salir</button></form>
                 </>
@@ -59,6 +60,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <h4>Plataforma</h4>
               <ul>
                 <li><Link href="/cursos">Cursos</Link></li>
+                <li><Link href="/especialistas">Especialistas</Link></li>
                 <li><Link href="/certificados">Verificar un certificado</Link></li>
                 <li><Link href="/mi-cuenta#docente">Quiero enseñar</Link></li>
                 <li><a href={EMOOD_URL} target="_blank" rel="noopener noreferrer">E‑Mood: emprendé con impacto</a></li>
